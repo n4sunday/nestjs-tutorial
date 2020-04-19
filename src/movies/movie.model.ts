@@ -7,7 +7,7 @@ export const MovieSchema = new mongoose.Schema({
     gross: { type: Number, request: true },
 })
 
-export interface Movie {
+export interface Movie extends mongoose.Document {
     id: string
     title: string
     rank: number

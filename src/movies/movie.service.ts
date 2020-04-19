@@ -23,8 +23,6 @@ export class MoviesService {
 
     async getMovies() {
         const movie = await this.movieModel.find().exec()
-        console.log('NOVIE', movie)
-
         return movie.map(prod => ({
             id: prod.id,
             title: prod.title,
@@ -36,28 +34,30 @@ export class MoviesService {
 
     async getSingleMovie(prodId: string) {
         const movie = await this.findMovie(prodId)
-        console.log('NOVIE', movie)
-
-        return movie
+        return {
+            id: movie.id,
+            title: movie.title,
+            rank: movie.rank,
+            distributor: movie.distributor,
+            gross: movie.gross
+        }
     }
 
-    updateMovie(prodId: string, title: string, rank: number, distributor: string, gross: number) {
-
-        // const [movie, index] = this.findMovie(prodId)
-        // const updatedMovie = { ...movie }
-        // if (title) {
-        //     updatedMovie.title = title
-        // }
-        // if (rank) {
-        //     updatedMovie.rank = rank
-        // }
-        // if (distributor) {
-        //     updatedMovie.distributor = distributor
-        // }
-        // if (gross) {
-        //     updatedMovie.gross = gross
-        // }
-        // this.movies[index] = updatedMovie
+    async updateMovie(prodId: string, title: string, rank: number, distributor: string, gross: number) {
+        const updatedMovie = await this.findMovie(prodId)
+        if (title) {
+            updatedMovie.title = title
+        }
+        if (rank) {
+            updatedMovie.rank = rank
+        }
+        if (distributor) {
+            updatedMovie.distributor = distributor
+        }
+        if (gross) {
+            updatedMovie.gross = gross
+        }
+        updatedMovie.save()
     }
 
     private async findMovie(id: string): Promise<Movie> {
@@ -72,12 +72,6 @@ export class MoviesService {
             throw new NotFoundException('Could not find movie.')
 
         }
-        return {
-            id: movie.id,
-            title: movie.title,
-            rank: movie.rank,
-            distributor: movie.distributor,
-            gross: movie.gross
-        }
+        return movie
     }
 }

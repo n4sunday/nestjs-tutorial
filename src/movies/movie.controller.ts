@@ -37,14 +37,14 @@ export class MoviesController {
     }
 
     @Patch(':id')
-    updateMovie(
+    async updateMovie(
         @Param('id') prodId: string,
         @Body('title') prodTitle: string,
         @Body('rank') prodRank: number,
         @Body('distributor') prodDistributor: string,
         @Body('gross') prodGross: number,
     ) {
-        this.moviesService.updateMovie(prodId, prodTitle, prodRank, prodDistributor, prodGross)
+        await this.moviesService.updateMovie(prodId, prodTitle, prodRank, prodDistributor, prodGross)
         return null
     }
 }
