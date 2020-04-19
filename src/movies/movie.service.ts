@@ -1,15 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+
 import { Movie } from './movie.model'
 
 @Injectable()
 export class MoviesService {
     private movies: Movie[] = []
 
-    insertMovie(title: string, rank: number, distributor: string, gross: number) {
-        const prodId = Math.random().toString()
-        const newMovies = new Movie(prodId, title, rank, distributor, gross)
-        this.movies.push(newMovies)
-        return prodId
+    constructor(@InjectModel('Movie') private readonly movieModel: Model<Movie>) { }
+
+    async insertMovie(title: string, rank: number, distributor: string, gross: number) {
+        const newMovies = new this.movieModel({
+            title,
+            rank,
+            distributor,
+            gross
+        })
+        const result = await newMovies.save()
+        console.log("RESULT", result)
+        return 'prodId'
     }
 
     getMovies() {

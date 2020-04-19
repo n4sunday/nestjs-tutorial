@@ -7,6 +7,7 @@ export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {
 
     }
+    
     @Post()
     addMovie(
         @Body('title') prodTitle: string,
