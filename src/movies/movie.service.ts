@@ -23,6 +23,8 @@ export class MoviesService {
 
     async getMovies() {
         const movie = await this.movieModel.find().exec()
+        console.log('NOVIE', movie)
+
         return movie.map(prod => ({
             id: prod.id,
             title: prod.title,
@@ -32,35 +34,50 @@ export class MoviesService {
         }))
     }
 
-    getSingleMovie(prodId: string) {
-        const movie = this.findMovie(prodId)[0]
-        return { ...movie }
+    async getSingleMovie(prodId: string) {
+        const movie = await this.findMovie(prodId)
+        console.log('NOVIE', movie)
+
+        return movie
     }
 
     updateMovie(prodId: string, title: string, rank: number, distributor: string, gross: number) {
-        const [movie, index] = this.findMovie(prodId)
-        const updatedMovie = { ...movie }
-        if (title) {
-            updatedMovie.title = title
-        }
-        if (rank) {
-            updatedMovie.rank = rank
-        }
-        if (distributor) {
-            updatedMovie.distributor = distributor
-        }
-        if (gross) {
-            updatedMovie.gross = gross
-        }
-        this.movies[index] = updatedMovie
+
+        // const [movie, index] = this.findMovie(prodId)
+        // const updatedMovie = { ...movie }
+        // if (title) {
+        //     updatedMovie.title = title
+        // }
+        // if (rank) {
+        //     updatedMovie.rank = rank
+        // }
+        // if (distributor) {
+        //     updatedMovie.distributor = distributor
+        // }
+        // if (gross) {
+        //     updatedMovie.gross = gross
+        // }
+        // this.movies[index] = updatedMovie
     }
 
-    private findMovie(id: string): [Movie, number] {
-        const moviIndex = this.movies.findIndex((prod) => prod.id === id)
-        const movie = this.movies[moviIndex]
-        if (!movie) {
+    private async findMovie(id: string): Promise<Movie> {
+        let movie
+        try {
+            movie = await this.movieModel.findById(id)
+        }
+        catch (error) {
             throw new NotFoundException('Could not find movie.')
         }
-        return [movie, moviIndex]
+        if (!movie) {
+            throw new NotFoundException('Could not find movie.')
+
+        }
+        return {
+            id: movie.id,
+            title: movie.title,
+            rank: movie.rank,
+            distributor: movie.distributor,
+            gross: movie.gross
+        }
     }
 }

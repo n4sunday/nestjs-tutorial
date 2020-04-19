@@ -31,8 +31,9 @@ export class MoviesController {
     }
 
     @Get(':id')
-    getMovies(@Param('id') prodId: string, ) {
-        return this.moviesService.getSingleMovie(prodId)
+    async getMovies(@Param('id') prodId: string, ) {
+        const movies = await this.moviesService.getSingleMovie(prodId)
+        return movies
     }
 
     @Patch(':id')
