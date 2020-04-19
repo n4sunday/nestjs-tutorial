@@ -7,21 +7,27 @@ export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {
 
     }
-    
+
     @Post()
-    addMovie(
+    async addMovie(
         @Body('title') prodTitle: string,
         @Body('rank') prodRank: number,
         @Body('distributor') prodDistributor: string,
         @Body('gross') prodGross: number,
     ) {
-        const generatedId = this.moviesService.insertMovie(prodTitle, prodRank, prodDistributor, prodGross)
+        const generatedId = await this.moviesService.insertMovie(
+            prodTitle,
+            prodRank,
+            prodDistributor,
+            prodGross
+        )
         return { id: generatedId }
     }
 
     @Get()
-    getAllMovies() {
-        return this.moviesService.getMovies()
+    async getAllMovies() {
+        const movies = await this.moviesService.getMovies()
+        return movies
     }
 
     @Get(':id')

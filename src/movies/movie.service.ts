@@ -18,12 +18,18 @@ export class MoviesService {
             gross
         })
         const result = await newMovies.save()
-        console.log("RESULT", result)
-        return 'prodId'
+        return result.id as string
     }
 
-    getMovies() {
-        return [...this.movies]
+    async getMovies() {
+        const movie = await this.movieModel.find().exec()
+        return movie.map(prod => ({
+            id: prod.id,
+            title: prod.title,
+            rank: prod.rank,
+            distributor: prod.distributor,
+            gross: prod.gross
+        }))
     }
 
     getSingleMovie(prodId: string) {
