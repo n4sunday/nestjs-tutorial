@@ -60,6 +60,13 @@ export class MoviesService {
         updatedMovie.save()
     }
 
+    async deleteMovie(prodId: string) {
+        const result = await this.movieModel.deleteOne({ _id: prodId }).exec()
+        if (result.n === 0) {
+            throw new NotFoundException('Could not delete movie')
+        }
+    }
+
     private async findMovie(id: string): Promise<Movie> {
         let movie
         try {

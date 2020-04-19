@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common'
 
 import { MoviesService } from './movie.service'
 
@@ -45,6 +45,12 @@ export class MoviesController {
         @Body('gross') prodGross: number,
     ) {
         await this.moviesService.updateMovie(prodId, prodTitle, prodRank, prodDistributor, prodGross)
+        return null
+    }
+
+    @Delete(':id')
+    async removeMovie(@Param('id') prodId: string) {
+        await this.moviesService.deleteMovie(prodId)
         return null
     }
 }
