@@ -9,7 +9,6 @@ import {
     ForeignKey,
     BelongsToMany
 } from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger'
 
 @Table({
     timestamps: true,
@@ -21,7 +20,7 @@ export class Cost extends Model<Cost>{
     @PrimaryKey
     @AutoIncrement
     @Column
-    cost_id: number
+    costId: number
 
     @AllowNull(false)
     @Column
@@ -30,5 +29,4 @@ export class Cost extends Model<Cost>{
     @AllowNull(false)
     @Column
     date: string
-
 }

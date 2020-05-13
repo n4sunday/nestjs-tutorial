@@ -39,11 +39,26 @@ export class CostController {
 
     @Get(':id')
     async getCost(@Param('id') id: number, @Res() res) {
-        console.log("ID", id);
-
         const status = HttpStatus.OK
         const cost = await this.costService.getCost(id)
         const response = { cost }
+        return res.status(status).json(response)
+    }
+
+    @Delete('/:id')
+    async deleteCost(@Param('id') id: number, @Res() res) {
+        let status = HttpStatus.OK
+        let response = {}
+        const cost = await this.costService.deleteCost(id)
+        if (cost === null) {
+            status = HttpStatus.BAD_REQUEST;
+            response = {
+                message: 'no cost id',
+            }
+        }
+        else {
+            response = { message: 'delete success' }
+        }
         return res.status(status).json(response)
     }
 }

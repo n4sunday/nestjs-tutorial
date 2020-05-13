@@ -17,6 +17,16 @@ export class CostService {
     }
 
     async getCost(id: number) {
-        return await this.costRepository.findOne({ where: { cost_id: id }, raw: true })
+        return await this.costRepository.findOne({ where: { costId: id }, raw: true })
+    }
+
+    async deleteCost(costId: any) {
+        const data = await this.costRepository.findByPk(costId)
+        if (data) {
+            return await data.destroy()
+        }
+        else {
+            return null
+        }
     }
 }
