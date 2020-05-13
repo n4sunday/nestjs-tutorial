@@ -8,8 +8,8 @@ export class CostService {
     ) { }
 
     async addCost(cost: Cost) {
-        const costCreate = await this.costRepository.create(cost)
-        return costCreate
+        const data = await this.costRepository.create(cost)
+        return data
     }
 
     async getCosts(): Promise<Cost[]> {
@@ -20,13 +20,25 @@ export class CostService {
         return await this.costRepository.findOne({ where: { costId: id }, raw: true })
     }
 
-    async deleteCost(costId: any) {
-        const data = await this.costRepository.findByPk(costId)
+    async updateCost(id: any, cost: Cost) {
+        const data = await this.costRepository.findByPk(id)
         if (data) {
-            return await data.destroy()
+            await data.update(cost)
+            return this.costRepository.findAll({ raw: true })
         }
         else {
-            return null
+            return false
+        }
+    }
+
+    async deleteCost(id: any) {
+        const data = await this.costRepository.findByPk(id)
+        if (data) {
+            await data.destroy()
+            return this.costRepository.findAll({ raw: true })
+        }
+        else {
+            return false
         }
     }
 }

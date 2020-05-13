@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiBody } from '@nestjs/swagger'
 import { CostService } from './cost.service'
-import { AddCostDto } from '../dto/cost.dto'
+import { CostDto } from '../dto/cost.dto'
 
 
 @Controller('cost')
@@ -21,7 +21,7 @@ export class CostController {
 
     @Post()
     @ApiCreatedResponse({ description: 'Add Success' })
-    @ApiBody({ type: AddCostDto })
+    @ApiBody({ type: CostDto })
     async addCost(@Body() data, @Res() res) {
         const status = HttpStatus.OK
         let response = {}
@@ -45,19 +45,37 @@ export class CostController {
         return res.status(status).json(response)
     }
 
-    @Delete('/:id')
+    @Patch(':id')
+    @ApiBody({ type: CostDto })
+    async updateCost(@Param('id') id: number, @Body() data, @Res() res) {
+        let status = HttpStatus.OK
+        let response = {}
+        const cost = await this.costService.updateCost(id, data)
+        if (!cost) {
+            status = HttpStatus.BAD_REQUEST;
+            response = {
+                message: 'can not find cost id',
+            }
+        }
+        else {
+            response = cost
+        }
+        return res.status(status).json(response)
+    }
+
+    @Delete(':id')
     async deleteCost(@Param('id') id: number, @Res() res) {
         let status = HttpStatus.OK
         let response = {}
         const cost = await this.costService.deleteCost(id)
-        if (cost === null) {
+        if (!cost) {
             status = HttpStatus.BAD_REQUEST;
             response = {
-                message: 'no cost id',
+                message: 'can not find cost id',
             }
         }
         else {
-            response = { message: 'delete success' }
+            response = cost
         }
         return res.status(status).json(response)
     }

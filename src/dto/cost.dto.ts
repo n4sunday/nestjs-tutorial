@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class AddCostDto {
+export class CostDto {
     @ApiProperty()
     price: number;
 
