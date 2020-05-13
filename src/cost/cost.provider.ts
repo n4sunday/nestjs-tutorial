@@ -1,4 +1,4 @@
-import { Cost } from './cost.model'
+import { Cost } from './models/cost.model'
 
 export const CostProviders = [
     {

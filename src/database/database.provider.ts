@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
-import { Cost } from '../cost/cost.model'
+import { Cost } from '../cost/models/cost.model'
 
 export const DatabaseProvider = [
     {

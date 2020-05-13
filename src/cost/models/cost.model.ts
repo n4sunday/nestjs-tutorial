@@ -8,8 +8,8 @@ import {
     HasMany,
     ForeignKey,
     BelongsToMany
-
 } from 'sequelize-typescript';
+import { ApiProperty } from '@nestjs/swagger'
 
 @Table({
     timestamps: true,
@@ -30,4 +30,5 @@ export class Cost extends Model<Cost>{
     @AllowNull(false)
     @Column
     date: string
+
 }
