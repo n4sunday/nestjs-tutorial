@@ -2,7 +2,7 @@ import { Cost } from './models/cost.model'
 
 export const CostProviders = [
     {
-        provide: 'costRepo',
+        provide: 'COST_REPOSITORY',
         useValue: Cost,
     }
 ]

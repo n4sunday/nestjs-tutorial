@@ -34,7 +34,16 @@ export class CostController {
     async getCosts(@Res() res) {
         const status = HttpStatus.OK
         const costs = await this.costService.getCosts()
-        const response = costs
+        return res.status(status).json(costs)
+    }
+
+    @Get(':id')
+    async getCost(@Param('id') id: number, @Res() res) {
+        console.log("ID", id);
+
+        const status = HttpStatus.OK
+        const cost = await this.costService.getCost(id)
+        const response = { cost }
         return res.status(status).json(response)
     }
 }
