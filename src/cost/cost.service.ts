@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { Cost } from './models/cost.model'
+import { Sequelize } from 'sequelize'
 
 @Injectable()
 export class CostService {
@@ -40,5 +41,12 @@ export class CostService {
         else {
             return false
         }
+    }
+
+    async getAllPrice() {
+        const data = await this.costRepository.findAll({
+            attributes: [[Sequelize.fn('sum', Sequelize.col('price')), 'allprice']]
+        })
+        return data
     }
 }
